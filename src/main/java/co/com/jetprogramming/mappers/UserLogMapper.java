@@ -32,11 +32,8 @@ public class UserLogMapper implements EntityMapper<UserLog, UserLogDto> {
 	@Override
 	public UserLogDto mapDto(UserLog entity) {
 		UserLogDto map = modelMapper.map(entity, UserLogDto.class);
-		// UserLogDto map = new UserLogDto();
-		// BeanUtils.copyProperties(entity, map, "dateTimeLog", "dateLog");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		map.setDateTimeLog(entity.getDatetimeLog().format(formatter));
-		map.setDateLog(entity.getDateLog().format(DateTimeFormatter.ISO_DATE));
 		return map;
 	}
 
