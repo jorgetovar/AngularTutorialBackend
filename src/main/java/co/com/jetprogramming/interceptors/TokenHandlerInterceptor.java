@@ -18,26 +18,26 @@ public class TokenHandlerInterceptor implements HandlerInterceptor {
 	public void afterCompletion(final HttpServletRequest request, final HttpServletResponse response,
 			final Object handler, final Exception ex) throws Exception {
 		if (ex != null)
-			ex.printStackTrace();
-		log.info("[afterCompletion][" + request + "][exception: " + ex + "]");
+			log.error("afterCompletion", ex);
+		log.info("[afterCompletion][{}][exception: {}]", request, ex);
 	}
 
 	@Override
 	public void postHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler,
 			final ModelAndView modelAndView) throws Exception {
-		log.info("[postHandle][" + request + "]");
+		log.info("[postHandle][{}]", request);
 	}
 
 	@Override
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
 			throws Exception {
-		log.info("[preHandle][" + request + "]" + "[" + request.getMethod() + "]" + request.getRequestURI()
-				+ getParameters(request));
+		log.info("[preHandle][{}]" + "[{}]{}{}", request, request.getMethod(), request.getRequestURI(),
+				getParameters(request));
 		return true;
 	}
 
 	private String getParameters(final HttpServletRequest request) {
-		final StringBuffer posted = new StringBuffer();
+		final StringBuilder posted = new StringBuilder();
 		final Enumeration<?> e = request.getParameterNames();
 		if (e != null)
 			posted.append("?");
@@ -63,7 +63,7 @@ public class TokenHandlerInterceptor implements HandlerInterceptor {
 	private String getRemoteAddr(final HttpServletRequest request) {
 		final String ipFromHeader = request.getHeader("X-FORWARDED-FOR");
 		if (ipFromHeader != null && ipFromHeader.length() > 0) {
-			log.debug("ip from proxy - X-FORWARDED-FOR : " + ipFromHeader);
+			log.debug("ip from proxy - X-FORWARDED-FOR : {}", ipFromHeader);
 			return ipFromHeader;
 		}
 		return request.getRemoteAddr();
